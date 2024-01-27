@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const { db } = require("./db/db");
+const { errorhandler } = require("./middlewares/errorMiddleware");
 const { readdirSync } = require("fs");
 
 const app = express();
@@ -18,6 +19,8 @@ app.use(cors());
 readdirSync("./routes").map((route) =>
   app.use("/api/v1", require("./routes/" + route))
 );
+
+app.use(errorhandler);
 const server = () => {
   db();
   app.listen(PORT, () => {
