@@ -1,14 +1,12 @@
-const IncomeSchema = require("../models/IncomeModel");
-const CategorySchema = require("../models/CategoryModel");
-
+const ExpenseSchema = require("../models/ExpenseModel");
 const expressAsyncHandler = require("express-async-handler");
 
-//add income
-exports.addIncome = expressAsyncHandler(async (req, res) => {
+//add expense
+exports.addExpense = expressAsyncHandler(async (req, res) => {
   const { title, amount, category, description, date, user } = req.body;
 
   try {
-    const income = await IncomeSchema.create({
+    const expense = await ExpenseSchema.create({
       title,
       amount,
       category,
@@ -25,65 +23,61 @@ exports.addIncome = expressAsyncHandler(async (req, res) => {
         .status(400)
         .json({ message: "Amount must be a positive number!" });
     }
-    res.status(200).json(income);
+    res.status(200).json(expense);
   } catch (error) {
     res.status(500).json({ message: "Server Error" });
   }
 });
 
-//fetch all income by id
-exports.fetchIncomeById = expressAsyncHandler(async (req, res) => {
+//fetch all expense by id
+exports.fetchExpenseById = expressAsyncHandler(async (req, res) => {
   const { id } = req?.params;
   try {
-    const income = await IncomeSchema.findById(id).populate("user");
-    res.status(200).json(income);
+    const expense = await ExpenseSchema.findById(id).populate("user");
+    res.status(200).json(expense);
   } catch (error) {
     res.status(500).json({ message: "Server Error" });
   }
 });
 
-//fetch all income by userid
-exports.fetchIncomeByUserId = expressAsyncHandler(async (req, res) => {
+//fetch all expense by userid
+exports.fetchExpenseByUserId = expressAsyncHandler(async (req, res) => {
   const { userId } = req.body;
   try {
-    const incomes = await IncomeSchema.find({ user: userId })
+    const expense = await ExpenseSchema.find({ user: userId })
       .sort({ date: -1 })
       .populate("user")
       .populate("category");
-    res.status(200).json(incomes);
+
+    res.status(200).json(expense);
   } catch (error) {
     res.status(500).json({ message: "Server Error" });
   }
 });
 
 //fetch by category
-exports.fetchIncomeByCategory = expressAsyncHandler(async (req, res) => {
+exports.fetchExpenseByCategory = expressAsyncHandler(async (req, res) => {
   const { categoryName } = req.body;
   try {
-    const category = await CategorySchema.findOne({ name: categoryName });
-
-    if (!category) {
-      return res.status(404).json({ message: "Category not found" });
-    }
-    const incomes = await IncomeSchema.find({
-      category: category?._id,
+    const expense = await ExpenseSchema.find({
+      category: { name: categoryName },
     })
       .sort({ date: -1 })
       .populate("user")
       .populate("category");
-    res.status(200).json(incomes);
+    res.status(200).json(expense);
   } catch (error) {
     res.status(500).json({ message: "Server Error" });
   }
 });
 
-//Update Income
-exports.updateIncomeById = expressAsyncHandler(async (req, res) => {
+//Update Expense
+exports.updateExpenseById = expressAsyncHandler(async (req, res) => {
   const { id } = req?.params;
   const { title, amount, category, description, date } = req.body;
 
   try {
-    const income = await IncomeSchema.findByIdAndUpdate(
+    const expense = await ExpenseSchema.findByIdAndUpdate(
       id,
       {
         title,
@@ -103,19 +97,19 @@ exports.updateIncomeById = expressAsyncHandler(async (req, res) => {
         .status(400)
         .json({ message: "Amount must be a positive number!" });
     }
-    res.status(200).json(income);
+    res.status(200).json(expense);
   } catch (error) {
     res.status(500).json({ message: "Server Error" });
   }
 });
 
-//Delete Income
-exports.deleteIncomeById = expressAsyncHandler(async (req, res) => {
+//Delete Expense
+exports.deleteExpenseById = expressAsyncHandler(async (req, res) => {
   const { id } = req?.params;
 
   try {
-    const income = await IncomeSchema.findByIdAndDelete(id);
-    res.status(200).json("Income Record Deleted Successfully.");
+    await ExpenseSchema.findByIdAndDelete(id);
+    res.status(200).json("Expense Record Deleted Successfully.");
   } catch (error) {
     res.status(500).json({ message: "Server Error" });
   }

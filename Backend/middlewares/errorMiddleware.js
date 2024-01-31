@@ -1,6 +1,6 @@
-const errorhandler = (err, req, res, next) => {
+const errorhandler = (err, res, next) => {
   if (res.headersSent) {
-    return next(err); // Let Express handle the error if headers already sent
+    return next(err);
   }
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
 
