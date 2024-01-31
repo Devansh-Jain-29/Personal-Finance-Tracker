@@ -34,7 +34,7 @@ const SignUp = () => {
             Account Created Successfully <br /> Please Login in
           </div>
         );
-        router.push("/login");
+        router.push("/");
       })
       .catch((err) => {
         toast.error(err?.response?.data?.message);

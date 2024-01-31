@@ -8,6 +8,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        sm: "320px",
+        // => @media (min-width: 576px) { ... }
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
