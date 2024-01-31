@@ -1,4 +1,4 @@
-# Personal-Finance-Tracker : Next13, Node.Js, Tailwind 
+# Personal-Finance-Tracker : Next13, Node.Js, Tailwind
 
 ## Getting Started
 
@@ -32,5 +32,4 @@ npm start
 yarn start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
+Open [http://localhost:4000](http://localhost:4000) with your browser to see the result.
